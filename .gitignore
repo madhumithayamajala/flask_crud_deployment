@@ -1,0 +1,19 @@
+# Virtual environment
+venv/
+
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+__MACOSX/
+.idea/
+migrations/
+# Logs
+logs/
+
+# Temporary files
+*.log
+*.pot
+*.pyc
+
+# Environment variables
+.env
