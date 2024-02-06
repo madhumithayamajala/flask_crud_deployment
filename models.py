@@ -1,6 +1,5 @@
 from settings import db
 from sqlalchemy import Column, Integer, Text
-from datetime import datetime
 #
 
 class User(db.Model):
