@@ -20,6 +20,7 @@
 </ul>
 
 <h3>Output or endpoints :</h3>
+<li>Endpoint : https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/</li>
 <li>get all users <code> GET {endpoint}/user</code></li>
 <li>Create New User <code> POST {endpoint}/user</code></li>
 <li>Get particular User <code> GET {endpoint}/user/<id>2</code></li>

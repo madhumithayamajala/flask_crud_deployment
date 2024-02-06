@@ -1,0 +1,520 @@
+{
+	"info": {
+		"_postman_id": "1a6a968d-3ca9-4b60-a359-40c9ec408ec2",
+		"name": "User Crud Flask",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "23293925"
+	},
+	"item": [
+		{
+			"name": "Users",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user",
+					"protocol": "https",
+					"host": [
+						"xd91tjbst7",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "all users",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user",
+							"protocol": "https",
+							"host": [
+								"xd91tjbst7",
+								"execute-api",
+								"ap-south-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 06 Feb 2024 06:48:13 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "74"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "Ss5mvi-fBcwEPtQ="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": [],\n    \"message\": \"All records are fetched\",\n    \"status\": 200\n}"
+				}
+			]
+		},
+		{
+			"name": "Create Users",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "first_name",
+							"value": "madhu",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "yamajala",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "madhuy@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "madhu12345",
+							"type": "text"
+						},
+						{
+							"key": "mobile_number",
+							"value": "908765465456",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user",
+					"protocol": "https",
+					"host": [
+						"xd91tjbst7",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"user"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "post user",
+					"originalRequest": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "madhu",
+									"type": "text"
+								},
+								{
+									"key": "last_name",
+									"value": "yamajala",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "madhuy@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "password",
+									"value": "madhu12345",
+									"type": "text"
+								},
+								{
+									"key": "mobile_number",
+									"value": "908765465456",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user",
+							"protocol": "https",
+							"host": [
+								"xd91tjbst7",
+								"execute-api",
+								"ap-south-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"user"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 06 Feb 2024 06:49:49 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "82"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "Ss52HjSBhcwEP8Q="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User created successfully!!! \",\n    \"status\": 201,\n    \"user_id\": 2\n}"
+				}
+			]
+		},
+		{
+			"name": "get user",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user/25",
+					"protocol": "https",
+					"host": [
+						"xd91tjbst7",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"user",
+						"25"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "user data",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user/2",
+							"protocol": "https",
+							"host": [
+								"xd91tjbst7",
+								"execute-api",
+								"ap-south-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 06 Feb 2024 06:50:32 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "240"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "Ss586jHjhcwEMUw="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"data\": {\n        \"email\": \"madhuy@gmail.com\",\n        \"first_name\": \"madhu\",\n        \"id\": 2,\n        \"last_name\": \"yamajala\",\n        \"mobile_number\": \"908765465456\",\n        \"password\": \"madhu12345\"\n    },\n    \"message\": \"Record are fetched\",\n    \"status\": 200\n}"
+				},
+				{
+					"name": "no user found",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user/25",
+							"protocol": "https",
+							"host": [
+								"xd91tjbst7",
+								"execute-api",
+								"ap-south-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"user",
+								"25"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 06 Feb 2024 06:50:41 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "52"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "Ss5-TgkthcwEMOg="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User not exists\",\n    \"status\": 404\n}"
+				}
+			]
+		},
+		{
+			"name": "User Update",
+			"request": {
+				"method": "PUT",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "first_name",
+							"value": "madhu_mitha",
+							"type": "text"
+						},
+						{
+							"key": "last_name",
+							"value": "yamajalaa",
+							"type": "text"
+						},
+						{
+							"key": "email",
+							"value": "maaadhu@gmail.com",
+							"type": "text"
+						},
+						{
+							"key": "mobile_number",
+							"value": "687687687",
+							"type": "text"
+						},
+						{
+							"key": "password",
+							"value": "hyderabad",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user/2",
+					"protocol": "https",
+					"host": [
+						"xd91tjbst7",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"user",
+						"2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "User Update",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "formdata",
+							"formdata": [
+								{
+									"key": "first_name",
+									"value": "madhu_mitha",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user/2",
+							"protocol": "https",
+							"host": [
+								"xd91tjbst7",
+								"execute-api",
+								"ap-south-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 06 Feb 2024 06:51:22 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "74"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "Ss6EniANhcwEM6w="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"User details updated successfully!!! \",\n    \"status\": 200\n}"
+				}
+			]
+		},
+		{
+			"name": "delete user",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user/2",
+					"protocol": "https",
+					"host": [
+						"xd91tjbst7",
+						"execute-api",
+						"ap-south-1",
+						"amazonaws",
+						"com"
+					],
+					"path": [
+						"user",
+						"2"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "delete user",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "https://xd91tjbst7.execute-api.ap-south-1.amazonaws.com/user/2",
+							"protocol": "https",
+							"host": [
+								"xd91tjbst7",
+								"execute-api",
+								"ap-south-1",
+								"amazonaws",
+								"com"
+							],
+							"path": [
+								"user",
+								"2"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "Date",
+							"value": "Tue, 06 Feb 2024 06:53:37 GMT"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json"
+						},
+						{
+							"key": "Content-Length",
+							"value": "72"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						},
+						{
+							"key": "Apigw-Requestid",
+							"value": "Ss6Z1gLahcwEMug="
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"message\": \"user record delete successfully!!! \",\n    \"status\": 200\n}"
+				}
+			]
+		}
+	]
+}
