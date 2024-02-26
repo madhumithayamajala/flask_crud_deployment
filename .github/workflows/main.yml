@@ -1,4 +1,4 @@
-name: Deploy to AWS Lambda Serverless
+name: Deploy to AWS Lambda Serverless Project
 
 on:
   push:

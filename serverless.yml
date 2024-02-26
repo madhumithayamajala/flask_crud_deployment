@@ -1,4 +1,4 @@
-service: aws-python-flask-api-project
+service: aws-flask-api-project
 
 frameworkVersion: "3"
 

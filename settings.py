@@ -7,7 +7,7 @@ from flask_sqlalchemy import SQLAlchemy
 app = Flask(__name__)
 app.config["DEBUG"] = True
 app.config[
-    'SQLALCHEMY_DATABASE_URI'] = 'postgresql://madhuuser:madhuuser@madhudb1.cbig68kc8ube.ap-south-1.rds.amazonaws.com/madhudb'
+    'SQLALCHEMY_DATABASE_URI'] = 'postgresql://madhuuser:madhuuser@madhuuser.cfsqyk4ui4co.ap-south-1.rds.amazonaws.com/madhuuser'
 
 db = SQLAlchemy(app)
 
