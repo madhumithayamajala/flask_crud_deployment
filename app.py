@@ -95,6 +95,11 @@ def create_user():
 
             message['message'] = f'Required fields are missing: {", ".join(missing_fields)}'
             return jsonify(message), 400
+    
+    # Check if email already exists
+        if User.query.filter_by(email=email).first() is not None:
+            message['message'] = 'Email already exists. Please use a different email.'
+            return jsonify(message), 400
 
         user = User(
             first_name=first_name,
@@ -107,13 +112,18 @@ def create_user():
         db.session.add(user)
         db.session.commit()
 
+        data_dict = {column.name: getattr(user, column.name) for column in
+                 class_mapper(user.__class__).mapped_table.columns}
+
         message.update({
             'status': 201,
             'message': 'User created successfully!!! ',
-            'user_id': user.id
+            'user_id': user.id,
+            'data':data_dict
         })
-    except:
-        pass
+    except Exception as e:
+        message['message'] = f'Something went wrong {e}'
+
     resp = jsonify(message)
     return resp
 
@@ -138,6 +148,15 @@ def update_user(id):
             current_user = User.query.get_or_404(id)
         except:
             return jsonify(message)
+
+        # Email validation
+        if new_email:
+            # Check if the new email is already associated with another user
+            if User.query.filter(User.id != id, User.email == new_email).first() is not None:
+                message['message'] = 'Email is already associated with another user.'
+                return jsonify(message), 400
+
+            current_user.email = new_email
 
         if new_email:
             current_user.email = new_email
