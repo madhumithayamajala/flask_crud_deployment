@@ -10,7 +10,7 @@ user_schema = UserSchema()
 users_schema = UserSchema(many=True)
 
 
-@app.route('/user', methods=['GET'])
+@app.route('/users', methods=['GET'])
 def get_all_users():
     """
     This function is mapped to the /user endpoint and
