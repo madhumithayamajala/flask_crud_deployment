@@ -1,9 +1,13 @@
-from flask import Flask, request, jsonify
-from sqlalchemy.orm import class_mapper
+from flask import request
+from sqlalchemy import desc
 
 from settings import db, app, migrate
 from models import User
-from flask_migrate import Migrate
+
+from user_schema import UserSchema
+
+user_schema = UserSchema()
+users_schema = UserSchema(many=True)
 
 
 @app.route('/user', methods=['GET'])
@@ -12,26 +16,10 @@ def get_all_users():
     This function is mapped to the /user endpoint and
     it renders all user records using the GET HTTP method.
     """
-    message = {
-        'status': 404,
-        'message': 'No users found'
-    }
-
-    users = User.query.all()
-
-    # Convert user objects to a list of dictionaries
-    data_list = [
-        {column.name: getattr(user, column.name) for column in class_mapper(user.__class__).mapped_table.columns}
-        for user in users
-    ]
-
-    message.update({
-        'status': 200,
-        'message': 'All records are fetched',
-        'data': data_list
-    })
-
-    return jsonify(message)
+    users = User.query.order_by(desc(User.created_at)).all()
+    serialized_users = users_schema.dump(users)
+    response = {"status": "success", "data": serialized_users, "message": "Users fetched successfully"}
+    return response
 
 
 @app.route('/user/<int:id>', methods=['GET'])
@@ -41,27 +29,13 @@ def get_specific_user(id):
     it render specific user records with respect to its pk 
     using GET Http method
     """
-    message = {
-        'status': 404,
-        'message': 'User not exists'
-    }
+    user = db.session.get(User, id)
+    if not user:
+        return {"status": "failed", "message": "User not found"}, 404
+    serialized_users = user_schema.dump(user)
+    response = {"status": "success", "data": serialized_users, "message": "User fetched successfully"}
+    return response
 
-    user = User.query.filter_by(id=id).first()
-
-    if user is None:
-        return jsonify(message)
-
-    # Convert user object to dictionary
-    data_dict = {column.name: getattr(user, column.name) for column in
-                 class_mapper(user.__class__).mapped_table.columns}
-
-    message.update({
-        'status': 200,
-        'message': 'Record are fetched',
-        'data': data_dict
-    })
-
-    return jsonify(message)
 
 @app.route('/user', methods=['POST'])
 def create_user():
@@ -69,63 +43,26 @@ def create_user():
     this function is map with /user endpoint and 
     it create user records using POST Http method
     """
-    message = {
-        'status': 404,
-        'message': 'Something went wrong'
-    }
     try:
-        first_name = request.form.get('first_name', '').strip()
-        last_name = request.form.get('last_name', '').strip()
-        email = request.form.get('email', '').strip()
-        password = request.form.get('password', '').strip()
-        mobile_number = request.form.get('mobile_number', '').strip()
+        data = request.get_json()
+        if not data:
+            return {"status": "failed", "message": "Empty payload received"}, 400
 
-        if not first_name or not last_name or not email or not password or not mobile_number:
-            missing_fields = []
-            if not first_name:
-                missing_fields.append('first_name')
-            if not last_name:
-                missing_fields.append('last_name')
-            if not email:
-                missing_fields.append('email')
-            if not password:
-                missing_fields.append('password')
-            if not mobile_number:
-                missing_fields.append('mobile_number')
-
-            message['message'] = f'Required fields are missing: {", ".join(missing_fields)}'
-            return jsonify(message), 400
-    
-    # Check if email already exists
-        if User.query.filter_by(email=email).first() is not None:
-            message['message'] = 'Email already exists. Please use a different email.'
-            return jsonify(message), 400
-
-        user = User(
-            first_name=first_name,
-            last_name=last_name,
-            email=email,
-            password=password,
-            mobile_number=mobile_number
-        )
-
-        db.session.add(user)
+        errors = user_schema.validate(data)
+        if errors:
+            return {"status": "failed", "message": f"Validation errors {errors}"}, 400
+        existing_user = User.query.filter_by(email=data['email']).first()
+        if existing_user:
+            return {"status": "failed", "message": "Email already exists"}, 409
+        new_user = User(**data)
+        db.session.add(new_user)
         db.session.commit()
+        serialized_user = user_schema.dump(new_user)
+        response_data = {"data": serialized_user, "status": "success", "message": "User created successfully"}
+        return response_data, 201
 
-        data_dict = {column.name: getattr(user, column.name) for column in
-                 class_mapper(user.__class__).mapped_table.columns}
-
-        message.update({
-            'status': 201,
-            'message': 'User created successfully!!! ',
-            'user_id': user.id,
-            'data':data_dict
-        })
     except Exception as e:
-        message['message'] = f'Something went wrong {e}'
-
-    resp = jsonify(message)
-    return resp
+        return {"status": "failed", "message": "An error occurred", "error": f"{str(e)}"}, 400
 
 
 @app.route('/user/<int:id>', methods=['PUT'])
@@ -134,50 +71,32 @@ def update_user(id):
     this function is map with /user/pk endpoint and 
     it update specific user records using PUT Http method
     """
-    message = {
-        'status': 404,
-        'message': 'user not found'
-    }
     try:
-        new_first_name = request.form.get('first_name', None)
-        new_last_name = request.form.get('last_name', None)
-        new_email = request.form.get('email', None)
-        new_password = request.form.get('password', None)
-        new_mobile_number = request.form.get('mobile_number', None)
-        try:
-            current_user = User.query.get_or_404(id)
-        except:
-            return jsonify(message)
+        user = db.session.get(User, id)
+        if not user:
+            return {"status": "failed", "message": "User not found"}, 404
+        data = request.get_json()
+        errors = user_schema.validate(data, partial=True)
+        if errors:
+            return {"status": "failed", "message": "Validation errors", "errors": errors}, 400
+        updated_email = data.get("email")
+        if updated_email and updated_email != user.email:
+            existing_user = User.query.filter_by(email=updated_email).first()
+            if existing_user:
+                return {"status": "failed",
+                        "message": "Email already exists"}, 409  # Conflict status code for existing resource
 
-        # Email validation
-        if new_email:
-            # Check if the new email is already associated with another user
-            if User.query.filter(User.id != id, User.email == new_email).first() is not None:
-                message['message'] = 'Email is already associated with another user.'
-                return jsonify(message), 400
-
-            current_user.email = new_email
-
-        if new_email:
-            current_user.email = new_email
-        if new_first_name:
-            current_user.first_name = new_first_name
-        if new_last_name:
-            current_user.last_name = new_last_name
-        if new_password:
-            current_user.password = new_password
-        if new_mobile_number:
-            current_user.mobile_number = new_mobile_number
-
+        user.email = data.get("email", user.email)
+        user.first_name = data.get("first_name", user.first_name)
+        user.last_name = data.get("last_name", user.last_name)
+        user.password = data.get("password", user.password)
+        user.mobile_number = data.get("mobile_number", user.mobile_number)
         db.session.commit()
-        message.update({
-            'status': 200,
-            'message': 'User details updated successfully!!! '
-        })
-    except:
-        pass
-    resp = jsonify(message)
-    return resp
+        serialized_user = user_schema.dump(user)
+        response_data = {"data": serialized_user, "status": "success", "message": "User updated successfully"}
+        return response_data, 200
+    except Exception as e:
+        return {"status": "failed", "message": "An error occurred", "error": str(e)}, 400
 
 
 @app.route('/user/<int:id>', methods=['DELETE'])
@@ -186,26 +105,22 @@ def delete_user(id):
     this function is map with /user/pk endpoint and 
     it delete specific user records using DELETE Http method
     """
-    message = {
-        'status': 404,
-        'message': 'user not found'
-    }
     try:
-        current_user = User.query.get_or_404(id)
-        db.session.delete(current_user)
+        user = db.session.get(User, id)
+        if not user:
+            return {"status": "failed", "message": "User not found"}, 404
+        db.session.delete(user)
         db.session.commit()
-        message.update({
-            'status': 200,
-            'message': 'user record delete successfully!!! '
-        })
-    except:
-        pass
-    resp = jsonify(message)
-    return resp
+        response_data = {"data": {}, "status": "success", "message": "User deleted successfully"}
+        return response_data, 200
+    except Exception as e:
+        return {"status": "failed", "message": "An error occurred", "error": str(e)}, 500
 
 
+# if __name__ == "__main__":
+#     migrate.init_app(app)
+#     with app.app_context():
+#         db.create_all()
+#     app.run(debug=True)
 if __name__ == "__main__":
-    migrate.init_app(app)
-    with app.app_context():
-        db.create_all()
-    app.run(debug=True)
+    app.run()
