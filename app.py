@@ -27,7 +27,7 @@ def get_all_users():
 @app.route('/user/<int:id>', methods=['GET'])
 def get_specific_user(id):
     try:
-        user = User.query.get(id)
+        user = User.query.filter_by(id=id).first()
         if not user:
             return jsonify({"status": "failed", "message": "User not found"}), 404
         serialized_user = user_schema.dump(user)
@@ -66,7 +66,7 @@ def create_user():
 @app.route('/user/<int:id>', methods=['PUT'])
 def update_user(id):
     try:
-        user = User.query.get(id)
+        user = User.query.filter_by(id=id).first()
         if not user:
             return jsonify({"status": "failed", "message": "User not found"}), 404
         data = request.get_json()
@@ -98,7 +98,7 @@ def update_user(id):
 @app.route('/user/<int:id>', methods=['DELETE'])
 def delete_user(id):
     try:
-        user = User.query.get(id)
+        user = User.query.filter_by(id=id).first()
         if not user:
             return jsonify({"status": "failed", "message": "User not found"}), 404
         db.session.delete(user)
