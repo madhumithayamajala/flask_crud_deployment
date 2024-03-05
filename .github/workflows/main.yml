@@ -1,9 +1,9 @@
-name: Deploy to AWS Lambda Serverless Project
+name: Deploy to the AWS Lambda Serverless Project
 
 on:
   push:
     branches:
-      - mains
+      - main
 
 jobs:
   deploy:

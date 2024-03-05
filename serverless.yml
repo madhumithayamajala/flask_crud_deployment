@@ -1,4 +1,4 @@
-service: aws-flask-api-project
+service: aws-flask-api-project-serverless
 
 frameworkVersion: "3"
 
