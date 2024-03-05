@@ -26,7 +26,7 @@
 </ul>
 
 <h3>Output or endpoints :</h3>
-<li>Endpoint : https://xitgrb8zm0.execute-api.ap-south-1.amazonaws.com/</li>
+<li>Endpoint : https://ln8l9nju1e.execute-api.ap-south-1.amazonaws.com/</li>
 <li>get all users <code> GET {endpoint}/user</code></li>
 <li>Create New User <code> POST {endpoint}/user</code></li>
 <li>Get particular User <code> GET {endpoint}/user/<id>2</code></li>
